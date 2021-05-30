@@ -2,6 +2,7 @@
 #define DOUBLEINTEGRAL_POLYGONDRAWING_H
 
 #include <SFML/Graphics.hpp>
+#include "matrix.h"
 
 class PolygonDrawing {
 public:
@@ -9,9 +10,7 @@ public:
 
     void Show() {
         sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y),
-                                "Draw polygon",
-                                sf::Style::Close);
-
+                                "Draw polygon", sf::Style::Close);
         sf::Clock clock;
         bool isMousePressed = false;
 
@@ -28,11 +27,14 @@ public:
                     // End input
                     isMousePressed = false;
                 }
-            if (isMousePressed &&
-                clock.getElapsedTime().asMilliseconds() > timeDeltaMs) {
+            if (isMousePressed && clock.getElapsedTime().asMilliseconds() > timeDeltaMs) {
                 // Painting
-                UpdatePolygon(sf::Vector2f(sf::Mouse::getPosition(window)));
-                clock.restart();
+                auto &&dot = sf::Vector2f(sf::Mouse::getPosition(window));
+                if (IsUniqueDot(dot)) {
+                    UpdatePolygon(dot);
+                    clock.restart();
+                    cout << "draw\n";
+                }
             }
 
             window.clear(sf::Color::Black);
@@ -42,12 +44,33 @@ public:
         }
     }
 
+    void GetPolygonInArea(dvector &crdX, dvector &crdY) {
+        auto cnt = polygon.getVertexCount() - 1;
+        crdX.resize(cnt);
+        crdY.resize(cnt);
+        double convertCoefX = (double) area.x / windowSize.x;
+        double convertCoefY = (double) area.y / windowSize.y;
+        for (int i = 0; i < cnt; i++) {
+            crdX[i] = polygon[i].position.x * convertCoefX;
+            crdY[i] = polygon[i].position.y * convertCoefY;
+        }
+    }
+
 private:
-    void UpdatePolygon(sf::Vector2f dot){
+    bool IsUniqueDot(const sf::Vector2f& dot){
+        auto cnt = polygon.getVertexCount();
+        if(cnt < 2) return true;
+        auto lastDot = polygon[cnt-2].position;
+        return lastDot != dot;
+    }
+
+    void UpdatePolygon(sf::Vector2f dot) {
         auto cnt = polygon.getVertexCount();
         HandleDotWithBorders(dot);
-        if (cnt == 0)
+        if (cnt == 0) {
             polygon.append(dot);
+            polygon.append(dot);
+        }
         else {
             polygon[cnt - 1] = sf::Vector2f(dot);
             polygon.append(polygon[0]);
