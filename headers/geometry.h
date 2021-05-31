@@ -8,12 +8,11 @@ using namespace std;
 
 typedef double db;
 
-db eps = 1e-3;
 
 struct Point {
     db x, y;
 
-    bool operator<(Point b);
+    bool operator<(Point b) const;
 };
 
 struct Segment;

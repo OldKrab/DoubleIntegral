@@ -1,10 +1,13 @@
 
-#include "geometry.h"
+#include "../headers/geometry.h"
+
+db eps = 1e-3;
+
 
 /// --- Point definitions --- \\\
 
-bool Point::operator<(Point b) {
-    return x < b.x + eps || x ;
+bool Point::operator<(Point b) const {
+    return x < b.x + eps || x - b.x < eps && y < b.y + eps;
 }
 
 
@@ -27,8 +30,6 @@ Segment::Segment(Point a, Point b) : a(a), b(b) {}
 
 // !!! Doesn't work with segments on same line (todo)
 bool Segment::Intersect(Segment s2) {
-    Segment s1 = *this;
-
     Vector ab{*this}, cd{s2}, ac{a, s2.a}, ad{a, s2.b}, ca{s2.a, a}, cb{s2.a, b};
     return ab.VectorProd(ac) * ab.VectorProd(ad) <= 0 && cd.VectorProd(ca) * cd.VectorProd(cb) <= 0;
 }
