@@ -16,7 +16,12 @@ db Spline::get_value(db x) {
     return a[i] + b[i] * (x - xs[i]) + c[i] / 2 * pow(x - xs[i], 2) + d[i] / 6 * pow(x - xs[i], 3);
 }
 
-
+db Spline::get_derivative_value(db x) {
+    if (!coefs_builded)
+        build_coefs();
+    int i = get_x_interval(x);
+    return b[i]+ c[i] * (x - xs[i]) + d[i] / 2 * pow(x - xs[i], 2);
+}
 
 // Private:
 
@@ -33,11 +38,11 @@ void Spline::build_coefs() {
 
 int Spline::get_x_interval(db x) const {
     if (x < xs[0])
-        throw runtime_error("х за пределами интервала интерполирования!");
+        throw runtime_error("х outside of integration range! (less)");
     for (int i = 1; i <= n; i++)
-        if (x <= xs[i])
+        if (x <= xs[i] + 1e-5)
             return i;
-    throw runtime_error("х за пределами интервала интерполирования!");
+    throw runtime_error("х outside of integration range! (more)");
 }
 
 void Spline::find_c() {
@@ -70,10 +75,12 @@ dvector Spline::sweep_method(dvector ca, dvector cb, dvector cc, dvector cd) con
 }
 
 void Spline::calc_h() {
-    h  = dvector(n);
+    h  = dvector(n+1);
     h[0] = 0;
     for (int i = 1; i <= n; i++)
         h[i] = xs[i] - xs[i - 1];
 }
+
+
 
 

@@ -14,9 +14,9 @@ public:
     /// Вычислить значение сплайна в точке х
     db get_value(db x) override;
 
-    Spline( const dvector& xs_,  const dvector& ys_);
+    db get_derivative_value(db x);
 
-    ~Spline(){};
+    Spline( const dvector& xs_,  const dvector& ys_);
 
 private:
     /// Найти все коэффициенты
