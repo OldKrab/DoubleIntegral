@@ -12,7 +12,7 @@ typedef vector<db> dvector;
 typedef vector<dvector> dmatrix;
 
 
-// Вывести вектор
+// Output vector
 template <class T>
 ostream& operator<<(ostream& out, const vector<T>& v)
 {
@@ -20,6 +20,21 @@ ostream& operator<<(ostream& out, const vector<T>& v)
         out << right << setw(8) << el << ' ';
     }
     return out;
+}
+
+// Input vector
+template <class T>
+istream& operator>>(istream& in, vector<T>& v)
+{
+    string s;
+    getline(in, s);
+    stringstream ss(s);
+    while(!ss.eof()){
+        T num;
+        ss >> num;
+        v.push_back(num);
+    }
+    return in;
 }
 
 // Сложение векторов
