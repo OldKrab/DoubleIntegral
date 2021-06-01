@@ -4,10 +4,7 @@
 #include <iostream>
 #include <iomanip>
 
-using namespace std;
-
 typedef double db;
-
 
 struct Point {
     db x, y;
