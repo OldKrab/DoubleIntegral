@@ -3,7 +3,7 @@ project(DoubleIntegral)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(DoubleIntegral main.cpp headers/PolygonDrawing.h source/geometry.cpp source/Spline.cpp source/ApproximationBase.cpp source/PolygonDrawing.cpp source/matrix.cpp source/SimpsonIntegral.cpp headers/SimpsonIntegral.h)
+add_executable(DoubleIntegral main.cpp headers/PolygonDrawing.h source/geometry.cpp source/Spline.cpp source/ApproximationBase.cpp source/PolygonDrawing.cpp source/matrix.cpp source/SimpsonIntegral.cpp headers/SimpsonIntegral.h source/MonteCarloIntegral.cpp headers/MonteCarloIntegral.h)
 
 set(SFML_STATIC_LIBRARIES TRUE)
 
